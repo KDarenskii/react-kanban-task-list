@@ -79,7 +79,7 @@ const Board: React.FC = () => {
         }
 
         const changedBoards: IBoard[] = boards.map((board) => {
-            if (activeBoard.id === board.id) {
+            if (activeBoard?.id === board.id) {
                 board.lists.forEach((currList) => {
                     if (currList.id === list.id) {
                         currList = list;
@@ -107,7 +107,7 @@ const Board: React.FC = () => {
         currentList.tasks.splice(taskIndex, 1);
 
         const changedBoards: IBoard[] = boards.map((board) => {
-            if (activeBoard.id === board.id) {
+            if (activeBoard?.id === board.id) {
                 board.lists.forEach((currList) => {
                     if (currList.id === list.id) {
                         currList = list;
@@ -145,39 +145,43 @@ const Board: React.FC = () => {
 
     return (
         <div className="flex gap-4 overflow-auto pb-4 h-full">
-            {activeBoard.lists.map(({ title, tasks, id }) => (
-                <div key={id} className="flex flex-col w-80 shrink-0 xs:w-[16rem]">
-                    <ListHeader title={title} length={tasks.length} id={id} />
-                    <ul
-                        data-list={id}
-                        className="flex flex-col gap-3 h-full border-1 border-dashed border-transparent"
-                        onDragOver={(event) => handleListDragOver(event, tasks.length)}
-                        onDrop={(event) => handleListDrop(event, { title, tasks, id })}
-                        onDragLeave={handleListDragLeave}
-                    >
-                        {tasks.length > 0 &&
-                            tasks.map((task) => (
-                                <Task
-                                    key={task.id}
-                                    task={task}
-                                    list={{ title, tasks, id }}
-                                    onDragEnd={handleDragEnd}
-                                    onDragLeave={handleDragLeave}
-                                    onDragOver={handleDragOver}
-                                    onDragStart={handleDragStart}
-                                    onDrop={handleDrop}
-                                />
-                            ))}
-                        {tasks.length < 1 && (
-                            <div className="flex flex-col flex-1 items-center justify-center pointer-events-none">
-                                <TbAlignBoxLeftMiddle className="h-12 w-12 dark:fill-grey" />
-                                <p className="text-grey text-xl">There are no tasks yet.</p>
-                            </div>
-                        )}
-                    </ul>
-                </div>
-            ))}
-            <NewColumn className="xs:w-[16rem]" boardId={activeBoard.id} />
+            {activeBoard && (
+                <>
+                    {activeBoard.lists.map(({ title, tasks, id }) => (
+                        <div key={id} className="flex flex-col w-80 shrink-0 xs:w-[16rem]">
+                            <ListHeader title={title} length={tasks.length} id={id} />
+                            <ul
+                                data-list={id}
+                                className="flex flex-col gap-3 h-full border-1 border-dashed border-transparent"
+                                onDragOver={(event) => handleListDragOver(event, tasks.length)}
+                                onDrop={(event) => handleListDrop(event, { title, tasks, id })}
+                                onDragLeave={handleListDragLeave}
+                            >
+                                {tasks.length > 0 &&
+                                    tasks.map((task) => (
+                                        <Task
+                                            key={task.id}
+                                            task={task}
+                                            list={{ title, tasks, id }}
+                                            onDragEnd={handleDragEnd}
+                                            onDragLeave={handleDragLeave}
+                                            onDragOver={handleDragOver}
+                                            onDragStart={handleDragStart}
+                                            onDrop={handleDrop}
+                                        />
+                                    ))}
+                                {tasks.length < 1 && (
+                                    <div className="flex flex-col flex-1 items-center justify-center pointer-events-none">
+                                        <TbAlignBoxLeftMiddle className="h-12 w-12 dark:fill-grey" />
+                                        <p className="text-grey text-xl">There are no tasks yet.</p>
+                                    </div>
+                                )}
+                            </ul>
+                        </div>
+                    ))}
+                    <NewColumn className="xs:w-[16rem]" boardId={activeBoard.id} />
+                </>
+            )}
         </div>
     );
 };

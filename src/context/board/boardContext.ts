@@ -6,8 +6,8 @@ import { ITask } from "../../models/types/Task";
 type BoardState = {
     boards: IBoard[];
     setBoards: React.Dispatch<React.SetStateAction<IBoard[]>>;
-    activeBoard: IBoard;
-    setActiveBoard: React.Dispatch<React.SetStateAction<IBoard>>;
+    activeBoard: IBoard | null;
+    setActiveBoard: React.Dispatch<React.SetStateAction<IBoard | null>>;
     addColumn: (boardId: string, name: string) => void;
     addBoard: (name: string) => void;
     renameList: (listId: string, name: string) => void;

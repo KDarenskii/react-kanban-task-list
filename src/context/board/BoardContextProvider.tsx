@@ -134,6 +134,7 @@ const BoardContextProvider: React.FC<Props> = ({ children }) => {
         };
         const newBoards = [...boards, newBoard];
         setBoards(newBoards);
+        setActiveBoard(newBoard);
     };
 
     const renameList = (listId: string, name: string) => {
@@ -163,7 +164,7 @@ const BoardContextProvider: React.FC<Props> = ({ children }) => {
     const deleteBoard = (boardId: string) => {
         const filteredBoards = boards.filter((board) => board.id !== boardId);
         setBoards([...filteredBoards]);
-        setActiveBoard(filteredBoards[0]);
+        setActiveBoard(filteredBoards[0] ?? null);
     };
 
     const deleteList = (listId: string) => {
@@ -204,7 +205,7 @@ const BoardContextProvider: React.FC<Props> = ({ children }) => {
 
     const addTask = (task: ITask) => {
         const newBoards: IBoard[] = boards.map((board) => {
-            if (board.id === activeBoard.id) {
+            if (board.id === activeBoard?.id) {
                 board.lists.forEach((list) => {
                     if (list.title === task.status) {
                         list.tasks.unshift(task);
@@ -267,10 +268,10 @@ const BoardContextProvider: React.FC<Props> = ({ children }) => {
     };
 
     const getStatuses = (): string[] => {
-        return activeBoard.lists.map((list) => list.title);
+        return activeBoard ? activeBoard.lists.map((list) => list.title) : [];
     };
 
-    const [activeBoard, setActiveBoard] = React.useState<IBoard>(boards[0]);
+    const [activeBoard, setActiveBoard] = React.useState<IBoard | null>(boards[0] ?? null);
 
     return (
         <BoardContext.Provider

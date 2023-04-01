@@ -15,10 +15,19 @@ const NewTask: React.FC = () => {
 
     return (
         <>
-            {isActive && <CreateTask setIsActive={setIsActive} />}
-            <Button className="xs:px-4 xs:py-0" disabled={activeBoard.lists.length < 1} onClick={handleOpenModal}>
-                <span className="xs:text-xl xs:font-bold">+</span> <span className="xs:hidden">Add New Task</span>
-            </Button>
+            {activeBoard && (
+                <>
+                    {isActive && <CreateTask setIsActive={setIsActive} />}
+                    <Button
+                        className="xs:px-4 xs:py-0"
+                        disabled={activeBoard.lists.length < 1}
+                        onClick={handleOpenModal}
+                    >
+                        <span className="xs:text-xl xs:font-bold">+</span>{" "}
+                        <span className="xs:hidden">Add New Task</span>
+                    </Button>
+                </>
+            )}
         </>
     );
 };
